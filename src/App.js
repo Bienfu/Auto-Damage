@@ -39,8 +39,8 @@ function App() {
       </header> */}
       <body>
         <div class="content">
-          <DamageLocation checkboxList={damageLocationList}/>
-        <button onClick={() => showPhoto(!photo)}>show photo</button>
+          <DamageLocation checkboxList={damageLocationList} onContinue={() => showPhoto(!photo)}/>
+        {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
         <PhotoPicker show={photo}/>
         </div>
       </body>

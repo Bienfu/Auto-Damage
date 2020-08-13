@@ -5,6 +5,7 @@ import React, { useState } from "react";
 function DamageLocation(props) {
     const checkboxList = props.checkboxList;
     const [checked, setChecked] = useState([]);
+    const {onContinue} = props;
     // const handleClick = (evt) => {
     //   const shopName = evt.currentTarget.dataset.name;
     //   const shop = checkboxList.find(x => x.name === shopName);
@@ -19,17 +20,20 @@ function DamageLocation(props) {
 
     const listItems = checkboxList.map((item, index) => (
       <div key={index} className="CheckBoxItem">
-            <label class="container">{item.value}
+            <label class="container">
             <input type="checkbox" onChange={() => onCheckChange(index)}/>
             <span class="checkmark"></span>
+            <div>
+              {item.value}
+            </div>
             </label>
       </div>
     ));
     return (
             <div className="DamageLocation">
-              <h1 className="DamageLocationTitle">Where did the damage occur?</h1>
+              <div className="DamageLocationTitle">Where did the damage occur?</div>
               <div className="ListItemsContainer">{listItems}</div>
-              <button className={(checked.length>0) ? "continue display" : "hide"}>Continue</button>
+              <button className={(checked.length>0) ? "continue display" : "hide"} onClick={onContinue}>Continue</button>
             </div>
            );
   }

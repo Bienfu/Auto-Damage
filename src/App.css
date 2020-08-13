@@ -38,7 +38,7 @@
 }
 
 .content{
-  max-width: 580px;
+  max-width: 400px;
 }
 
 /* The container */
@@ -48,7 +48,7 @@
   padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 22px;
+  /* font-size: 22px; */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -125,6 +125,10 @@
   font-size: 16px;
 }
 
+.ListItemsContainer{
+  text-align: left;
+}
+
 .display{
   display: block;
 }
@@ -132,3 +136,26 @@
 .hide{
   display: none;
 }
+
+.PhotoPickerPhoto{
+  max-width: 100%;
+  filter: grayscale(1);
+}
+
+.PhotoPickerContainer{
+  position: relative;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.PhotoPickerOverlay{
+  position: absolute;
+  /* left: 0; */
+  max-width: 100%;
+  top: 0;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+}
+
