@@ -3,6 +3,9 @@ import React, { useState, useCallback } from "react";
 
 function PhotoPicker(props) {
   const show = props.show;
+  const index = props.index;
+  const title = props.title;
+  const onClick = props.onClick;
   const [photo, setPhoto] = useState();
   // const handleClick = (evt) => {
   //   const shopName = evt.currentTarget.dataset.name;
@@ -41,12 +44,12 @@ function PhotoPicker(props) {
   //   </div>
   // ));
   return (
-    <div className={show ? "PhotoPicker" : "hide"}>
+    <div className={(index<=show) ? "PhotoPicker" : "hide"}>
       <div className="PhotoPickerTitle"></div>
       {/* <div className="ListItemsContainer">{listItems}</div> */}
       <input type="file" accept="image/*" onChange={handleChange} id="file" className="inputfile"/>
       <label for="file">
-        Choose a file
+        Please provide a photo of the '{title}' damage
         <i class="fas fa-file-upload uploadIcon"></i>
       </label>
       <div className="PhotoPickerContainer">
@@ -62,6 +65,7 @@ function PhotoPicker(props) {
         style={{ "clip-path": `polygon(0 0, ${100-filter}% 0, ${100-filter}% 100%, 0% 100%)` }}
         />
         </div>
+      <button className={(index==show) ? "continue display" : "hide"} onClick={onClick}>Continue</button>
     </div>
   );
 }

@@ -21,6 +21,8 @@ function App() {
 
   const [photos, showPhotos] = useState([]);
 
+  const [photoPickerIndex, changeIndex] = useState(0);
+
   function processPhotos(checkedItems){
     const photoList = checkedItems.map((item) => {
       return {
@@ -38,10 +40,15 @@ function App() {
     return (
       photos.map((photo, index)=> (
         <div key={photo.description} className="PhotoPickerItem">
-          Photo for {photo.description}
+          <PhotoPicker index={index} show={photoPickerIndex} title={photo.description} onClick={nextPhoto}/>
         </div>
       ))
     )
+  }
+
+  function nextPhoto(){
+    var newIndex = (photoPickerIndex < photos.length-1)? photoPickerIndex + 1 : photoPickerIndex;
+    changeIndex(newIndex);
   }
 
 
