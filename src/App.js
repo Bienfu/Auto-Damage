@@ -7,19 +7,43 @@ import PhotoPicker from './PhotoPicker';
 
 function App() {
   const damageLocationList = [
-    {checked: false, value: "Front"},
-    {checked: false, value: "Passenger Side"},
-    {checked: false, value: "Driver Side"},
-    {checked: false, value: "Rear"},
-    {checked: false, value: "Roof"},
-    {checked: false, value: "Interior"},
-    {checked: false, value: "Undercarriage"},
-    {checked: false, value: "Attatched Trailer"},
-    {checked: false, value: "Water Damage"},
-    {checked: false, value: "Airbags Deployed"}
+    "Front",
+    "Passenger Side",
+    "Driver Side",
+    "Rear",
+    "Roof",
+    "Interior",
+    "Undercarriage",
+    "Attached Trailer",
+    "Water Damage",
+    "Airbags Deployed"
   ];
 
-  const [photo, showPhoto] = useState(false);
+  const [photos, showPhotos] = useState([]);
+
+  function processPhotos(checkedItems){
+    const photoList = checkedItems.map((item) => {
+      return {
+        description: item,
+        name: undefined,
+        size: undefined,
+        date: undefined,
+        url:  undefined,
+      }
+    })
+    showPhotos(photoList);
+  }
+
+  function renderPhotos(){
+    return (
+      photos.map((photo, index)=> (
+        <div key={photo.description} className="PhotoPickerItem">
+          Photo for {photo.description}
+        </div>
+      ))
+    )
+  }
+
 
   return (
     <div className="App">
@@ -39,9 +63,9 @@ function App() {
       </header> */}
       <body>
         <div class="content">
-          <DamageLocation checkboxList={damageLocationList} onContinue={() => showPhoto(!photo)}/>
+          <DamageLocation checkboxList={damageLocationList} onContinue={processPhotos}/>
         {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
-        <PhotoPicker show={photo}/>
+        {renderPhotos()}
         </div>
       </body>
     </div>
@@ -49,3 +73,4 @@ function App() {
 }
 
 export default App;
+

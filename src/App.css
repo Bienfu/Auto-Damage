@@ -13,6 +13,8 @@
   }
 }
 
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -160,4 +162,36 @@
   border-bottom: solid;
   border-bottom-width: 15px;
   border-color: cornflowerblue;
+}
+
+.inputfile{
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+  padding: 7px 82px;
+  margin: 18px 0px;
+  background-color: #008cba;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  display: inline-block;
+  cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: #01455c;
+}
+
+.uploadIcon{
+  padding-left: 10px;
 }

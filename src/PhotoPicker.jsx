@@ -42,9 +42,13 @@ function PhotoPicker(props) {
   // ));
   return (
     <div className={show ? "PhotoPicker" : "hide"}>
-      <div className="PhotoPickerTitle">Please select a photo to upload</div>
+      <div className="PhotoPickerTitle"></div>
       {/* <div className="ListItemsContainer">{listItems}</div> */}
-      <input type="file" accept="image/*" onChange={handleChange} />
+      <input type="file" accept="image/*" onChange={handleChange} id="file" className="inputfile"/>
+      <label for="file">
+        Choose a file
+        <i class="fas fa-file-upload uploadIcon"></i>
+      </label>
       <div className="PhotoPickerContainer">
 
       <img
