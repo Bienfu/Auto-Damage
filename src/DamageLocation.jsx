@@ -26,10 +26,10 @@ function DamageLocation(props) {
 
     const listItems = checkboxList.map((item, index) => (
       <div key={index} className="CheckBoxItem">
-            <label class="container">
+            <label className="container">
             <input type="checkbox" onChange={() => onCheckChange(index)}/>
-            <span class="checkmark"></span>
-            <div>
+            <span className="checkmark"></span>
+            <div className="checkText">
               {item}
             </div>
             </label>
@@ -39,7 +39,7 @@ function DamageLocation(props) {
             <div className="DamageLocation">
               <div className="DamageLocationTitle">Where did the damage occur?</div>
               <div className="ListItemsContainer">{listItems}</div>
-              <button className={(checked.length>0) ? "continue display" : "hide"} onClick={onContinueClicked}>Continue</button>
+              {checked.length>0 && <button className="continue" onClick={onContinueClicked}>Continue</button>}
             </div>
            );
   }

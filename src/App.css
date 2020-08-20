@@ -111,13 +111,17 @@
   transform: rotate(45deg);
 }
 
+.DamageLocationTitle{
+  text-align: center;
+}
+
 .CheckBoxItem {
   padding: 5px 66px;
 }
 
 .continue {
   padding: 5px 66px;
-  margin: 5px 66px;
+  margin: auto;
   background-color: #008cba;
   border: none;
   color: white;
@@ -139,9 +143,24 @@
   display: none;
 }
 
+.imageContainer{
+  margin: auto;
+  width: 100%;
+  border-style: dashed;
+  background-color: lightgray;
+}
+
 .PhotoPickerPhoto {
   max-width: 100%;
-  filter: grayscale(1);
+  max-height: 300px;
+  display: block;
+  margin: auto;
+  /* filter: grayscale(1); */
+}
+
+.progress{
+  width: 100%;
+  margin: auto;
 }
 
 .PhotoPickerContainer {
@@ -154,19 +173,21 @@
 }
 
 .PhotoPickerOverlay {
-  position: absolute;
+  /* position: absolute;
   /* left: 0; */
-  max-width: 100%;
+  /* max-width: 100%;
   top: 0;
   clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
   border-bottom: solid;
   border-bottom-width: 15px;
-  border-color: cornflowerblue;
+  border-color: cornflowerblue; */
 }
 
 .inputfile{
-  width: 0.1px;
-	height: 0.1px;
+  border-style: dashed;
+    border-color: black;
+    width: 100%;
+    height: 100%;
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
@@ -175,23 +196,48 @@
 
 .inputfile + label {
   padding: 7px 82px;
-  margin: 18px 0px;
-  background-color: #008cba;
-  border: none;
+  height: 100%;
+  background-color: lightgray;
+  border-color: black;
+  border-style: dashed;
   color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   display: inline-block;
+  pointer-events: none;
   cursor: pointer; /* "hand" cursor */
 }
 
-.inputfile:focus + label,
-.inputfile + label:hover {
-  background-color: #01455c;
+.UploadButtons{
+  width: 100%;
+  height: 300px;
+  padding-top: 5px;
+}
+
+.UploadLabelText{
+  color: black;
 }
 
 .uploadIcon{
-  padding-left: 10px;
+  color: gray;
+  padding-top: 140px;
+    font-size: 50px;
+}
+
+.checkText{
+  padding-left: 15px;
+}
+
+.PhotoPickerItem{
+  padding:10px;
+}
+
+.btn{
+  display: flex;
+}
+
+.PhotoPickerLabel{
+  padding: 25px;
 }

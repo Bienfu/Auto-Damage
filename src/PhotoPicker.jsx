@@ -1,11 +1,14 @@
 import React, { useState, useCallback } from "react";
 // import ListItem from "./ListItem";
+import UploadFiles from "./components/upload-files.component.jsx";
 
 function PhotoPicker(props) {
   const show = props.show;
   const index = props.index;
   const title = props.title;
   const onClick = props.onClick;
+  const onUpload = props.onUpload;
+  const photos = props.photos;
   const [photo, setPhoto] = useState();
   // const handleClick = (evt) => {
   //   const shopName = evt.currentTarget.dataset.name;
@@ -46,15 +49,15 @@ function PhotoPicker(props) {
   return (
     <div className={(index<=show) ? "PhotoPicker" : "hide"}>
       <div className="PhotoPickerTitle"></div>
-      {/* <div className="ListItemsContainer">{listItems}</div> */}
-      <input type="file" accept="image/*" onChange={handleChange} id="file" className="inputfile"/>
-      <label for="file">
+      <label for="file" className="PhotoPickerLabel">
         Please provide a photo of the '{title}' damage
-        <i class="fas fa-file-upload uploadIcon"></i>
+        {/* <i class="fas fa-file-upload uploadIcon"></i> */}
       </label>
+      {/* <input type="file" accept="image/*" onChange={handleChange} id="file" className="inputfile"/> */}
+      <UploadFiles onUpload={onUpload} photos={photos} index={index} title={title}/>
       <div className="PhotoPickerContainer">
 
-      <img
+      {/* <img
         src={photo}
         className="PhotoPickerPhoto"
         // style={{ filter: `grayscale(${filter}%)` }}
@@ -63,7 +66,7 @@ function PhotoPicker(props) {
         src={photo}
         className="PhotoPickerOverlay"
         style={{ "clip-path": `polygon(0 0, ${100-filter}% 0, ${100-filter}% 100%, 0% 100%)` }}
-        />
+        /> */}
         </div>
       <button className={(index==show) ? "continue display" : "hide"} onClick={onClick}>Continue</button>
     </div>

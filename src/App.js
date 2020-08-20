@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import logo from './logo.svg';
-import './App.css';
-import './DamageLocation';
-import DamageLocation from './DamageLocation';
-import PhotoPicker from './PhotoPicker';
+import logo from "./logo.svg";
+import "./App.css";
+import "./DamageLocation";
+import DamageLocation from "./DamageLocation";
+import PhotoPicker from "./PhotoPicker";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const damageLocationList = [
@@ -16,41 +17,57 @@ function App() {
     "Undercarriage",
     "Attached Trailer",
     "Water Damage",
-    "Airbags Deployed"
+    "Airbags Deployed",
   ];
 
   const [photos, showPhotos] = useState([]);
 
   const [photoPickerIndex, changeIndex] = useState(0);
 
-  function processPhotos(checkedItems){
+  const [json, showJson] = useState();
+
+  function processPhotos(checkedItems) {
     const photoList = checkedItems.map((item) => {
       return {
         description: item,
         name: undefined,
         size: undefined,
         date: undefined,
-        url:  undefined,
-      }
-    })
+        url: undefined,
+      };
+    });
     showPhotos(photoList);
   }
 
-  function renderPhotos(){
-    return (
-      photos.map((photo, index)=> (
-        <div key={photo.description} className="PhotoPickerItem">
-          <PhotoPicker index={index} show={photoPickerIndex} title={photo.description} onClick={nextPhoto}/>
-        </div>
-      ))
-    )
+  function renderPhotos() {
+    return photos.map((photo, index) => (
+      <div key={photo.description} className="PhotoPickerItem">
+        <PhotoPicker
+          index={index}
+          show={photoPickerIndex}
+          title={photo.description}
+          onClick={nextPhoto}
+          photos={photos}
+          onUpload={showPhotos}
+        />
+      </div>
+    ));
   }
 
-  function nextPhoto(){
-    var newIndex = (photoPickerIndex < photos.length-1)? photoPickerIndex + 1 : photoPickerIndex;
+  function nextPhoto() {
+    var newIndex =
+      photoPickerIndex <= photos.length
+        ? photoPickerIndex + 1
+        : photoPickerIndex;
+    // if(newIndex == photos.length-1){
+    //   showButton(true);
+    // }
+    if (newIndex == photos.length) {
+      console.log(JSON.stringify(photos, null, 1));
+      showJson(JSON.stringify(photos, null, 1));
+    }
     changeIndex(newIndex);
   }
-
 
   return (
     <div className="App">
@@ -70,14 +87,18 @@ function App() {
       </header> */}
       <body>
         <div class="content">
-          <DamageLocation checkboxList={damageLocationList} onContinue={processPhotos}/>
-        {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
-        {renderPhotos()}
+          <DamageLocation
+            checkboxList={damageLocationList}
+            onContinue={processPhotos}
+          />
+          {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
+          {renderPhotos()}
+          {/* <button className={(finalButton) ? "continue display" : "hide"} onClick={nextPhoto}>Continue</button> */}
         </div>
+          <pre >{json}</pre>
       </body>
     </div>
   );
 }
 
 export default App;
-
