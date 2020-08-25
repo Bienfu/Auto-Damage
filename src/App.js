@@ -5,19 +5,41 @@ import "./DamageLocation";
 import DamageLocation from "./DamageLocation";
 import PhotoPicker from "./PhotoPicker";
 import "bootstrap/dist/css/bootstrap.min.css";
+import DamageLocationImage from "./DamageLocationImage";
 
 function App() {
+  // const damageLocationList = [
+  //   "Front",
+  //   "Passenger Side",
+  //   "Driver Side",
+  //   "Rear",
+  //   "Roof",
+  //   "Interior",
+  //   "Undercarriage",
+  //   "Attached Trailer",
+  //   "Water Damage",
+  //   "Airbags Deployed",
+  // ];
   const damageLocationList = [
-    "Front",
-    "Passenger Side",
-    "Driver Side",
-    "Rear",
-    "Roof",
+    "Front Bumper",
+    "Front Grille",
+    "Front Hood",
+    "Driver Side Front Door",
+    "Driver Side Rear Door",
+    "Driver Side Front Fender",
+    "Driver Side Rear Bumper",
+    "Passenger Side Front Door",
+    "Passenger Side Rear Door",
+    "Passenger Side Front Fender",
+    "Passenger Side Rear Bumper",
+    "Rear Bumper",
+    "Trunk Lid",
+    "Roof Panel",
     "Interior",
     "Undercarriage",
-    "Attached Trailer",
-    "Water Damage",
-    "Airbags Deployed",
+    // "Attached Trailer",
+    // "Water Damage",
+    // "Airbags Deployed",
   ];
 
   const [photos, showPhotos] = useState([]);
@@ -87,6 +109,7 @@ function App() {
       </header> */}
       <body>
         <div class="content">
+          <DamageLocationImage checkboxList={damageLocationList} onContinue={processPhotos}/>
           <DamageLocation
             checkboxList={damageLocationList}
             onContinue={processPhotos}

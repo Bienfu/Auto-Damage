@@ -57,6 +57,42 @@
   user-select: none;
 }
 
+.container2 {
+  display: block;
+  position: relative;
+  /* padding-left: 35px;
+  margin-bottom: 12px; */
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  /* font-size: 22px; */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.DamageLocationContent{
+  position: relative;
+  width: 400px;
+  height: 300px;
+}
+
+.CarImage{
+  position: absolute;
+  max-width: 400px;
+  max-height: 250px;
+}
+
+.DamageLocationButtons{
+  position: absolute;
+  width: 400px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(15, 30px);
+  grid-template-rows: repeat(8, 32px);
+}
+
 /* Hide the browser's default checkbox */
 .container input {
   position: absolute;
@@ -64,6 +100,16 @@
   cursor: pointer;
   height: 0;
   width: 0;
+}
+
+/* Hide the browser's default checkbox */
+.container2 input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  margin: 0;
 }
 
 /* Create a custom checkbox */
@@ -75,6 +121,7 @@
   width: 25px;
   background-color: #eee;
 }
+
 
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
@@ -103,7 +150,7 @@
   left: 9px;
   top: 5px;
   width: 5px;
-  height: 10px;
+  height: 13px;
   border: solid white;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
@@ -111,12 +158,63 @@
   transform: rotate(45deg);
 }
 
+.checkcircle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: rgb(153, 153, 153);
+  
+}
+
+/* On mouse-over, add a grey background color */
+.container2:hover input ~ .checkcircle {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container2 input:checked ~ .checkcircle {
+  background-color: #2196f3;
+}
+
+/* Create the checkc.checkcircle/indicator (hidden when not checked) */
+.checkcircle:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkc.checkcircle when checked */
+.container2 input:checked ~ .checkcircle:after {
+  display: block;
+}
+
+/* Style the checkc.checkcircle/indicator */
+.container2 .checkcircle:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 13px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
 .DamageLocationTitle{
   text-align: center;
 }
 
 .CheckBoxItem {
   padding: 5px 66px;
+}
+
+.CheckBoxItemCircle {
+  align-self: center;
 }
 
 .continue {
@@ -226,7 +324,7 @@
 }
 
 .checkText{
-  padding-left: 15px;
+  padding-left: 26px;
 }
 
 .PhotoPickerItem{
