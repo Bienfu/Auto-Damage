@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import UploadService from "../services/upload-files.service";
+import Select from "react-select";
 
 export default class UploadFiles extends Component {
   constructor(props) {
     super(props);
-    this.selectFile = this.selectFile.bind(this);
-    this.upload = this.upload.bind(this);
+    // this.selectFile = this.selectFile.bind(this);
+    // this.upload = this.upload.bind(this);
 
     this.state = {
       selectedFiles: undefined,
@@ -25,46 +26,41 @@ export default class UploadFiles extends Component {
   //   });
   // }
 
-  selectFile(event) {
-    this.setState({
-      selectedFiles: event.target.files,
-      photo: URL.createObjectURL(event.target.files[0]),
-    });
-  }
+  // selectFile(event) {
+  //   this.setState({
+  //     selectedFiles: event.target.files,
+  //     photo: URL.createObjectURL(event.target.files[0]),
+  //   });
+  // }
 
-  upload(evt) {
+  upload = (file, index) => {
     // let currentFile = this.state.selectedFiles[0];
-    let currentFile = evt.target.files[0];
-
-    this.setState({
+    let currentFile = file;
+    const displayInfo = {
       progress: 0,
-      currentFile: currentFile,
-      photo: URL.createObjectURL(currentFile),
-    });
+      photoUrl: URL.createObjectURL(currentFile),
+    };
 
     UploadService.upload(currentFile, (event) => {
-      this.setState({
-        progress: Math.round((100 * event.loaded) / event.total),
-      });
+      displayInfo.progress = Math.round((100 * event.loaded) / event.total);
+      this.forceUpdate();
     })
       .then((response) => {
-        this.setState({
-          message: response.data.message,
-        });
         var currentdate = new Date();
         const onUpload = this.props.onUpload;
-        const photos = this.props.photos;
-        const index = this.props.index;
-        const title = this.props.title;
-        const newValue = [...photos];
-        newValue[index] = {
-          description: title,
+        // const photos = this.props.photos;
+        // const index = this.props.index;
+        // const title = this.props.title;
+        displayInfo.newName = response.data.filename;
+        const fileInfo = {
+          description: undefined,
           name: response.data.originalname,
+          newName: response.data.filename,
           size: response.data.size,
           date: currentdate,
           url: "http://localhost:8080/uploads/" + response.data.filename,
         };
-        return onUpload(newValue);
+        onUpload(fileInfo);
       })
       // .then((files) => {
       //   this.setState({
@@ -72,16 +68,62 @@ export default class UploadFiles extends Component {
       //   });
       // })
       .catch(() => {
-        this.setState({
-          progress: 0,
-          message: "Could not upload the file!",
-          currentFile: undefined,
-        });
+        // this.setState({
+        //   progress: 0,
+        //   message: "Could not upload the file!",
+        //   currentFile: undefined,
+        // });
       });
+    return displayInfo;
+  };
 
+  uploadMulti = (evt) => {
+    const fileList = Array.from(evt.target.files);
+    // var i = 0;
+    // for (i = 0; i < length; i++) {
+    //   this.upload(evt, i);
+    // }
+    const photos = fileList.map((file, index) => this.upload(file, index));
     this.setState({
-      selectedFiles: undefined,
+      photo: photos,
     });
+  };
+
+  renderPhotos(photo) {
+    const photolist = photo;
+    const checkedList = this.props.checkedList;
+
+    return photolist.map((item, index) => (
+      <div key={index} className="PhotoPickerSelection">
+        <img
+          src={item.photoUrl}
+          className="PhotoPickerPhoto"
+          // style={{ filter: `grayscale(${filter}%)` }}
+        />
+        <div className={item.progress < 100 ? "progress" : "hide"}>
+          <div
+            className="progress-bar progress-bar-info progress-bar-striped"
+            role="progressbar"
+            aria-valuenow={item.progress}
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style={{ width: item.progress + "%" }}
+          >
+            {item.progress}%
+          </div>
+        </div>
+        <Select
+          placeholder="Tag Damage Area..."
+          onChange={(tags) => (tags?item.tags = tags.map(tag=>tag.value):null)}
+          menuPlacement="top"
+          maxMenuHeight={"150px"}
+          isMulti
+          isClearable={false}
+          isSearchable={false}
+          options={checkedList}
+        />
+      </div>
+    ));
   }
 
   handleChange(event) {
@@ -104,18 +146,21 @@ export default class UploadFiles extends Component {
       photo,
     } = this.state;
 
+    const { onUpdate } = this.props;
+
     return (
       <div>
         <label className={!photo ? "btn btn-default UploadButtons" : "hide"}>
           <input
             type="file"
             name="file"
-            onChange={this.upload}
+            multiple="multiple"
+            onChange={this.uploadMulti}
             className="inputfile"
           />
           <label for="file">
             <i className="fas fa-file-upload uploadIcon"></i>
-            <div className="UploadLabelText">Select file to upload</div>
+            <div className="UploadLabelText">Select files to upload</div>
           </label>
 
           {/* <button
@@ -126,14 +171,15 @@ export default class UploadFiles extends Component {
             Upload
           </button> */}
         </label>
-        <div className={photo?"imageContainer": "hide"}>
-          <img
+        <div className={photo ? "imageContainer" : "hide"}>
+          {/* <img
             src={photo}
             className="PhotoPickerPhoto"
             // style={{ filter: `grayscale(${filter}%)` }}
-          />
-          {currentFile && (
-            <div className={progress < 100?"progress": "hide"}>
+          /> */}
+          <div>{photo ? this.renderPhotos(photo) : null}</div>
+          {/* {currentFile && (
+            <div className={progress < 100 ? "progress" : "hide"}>
               <div
                 className="progress-bar progress-bar-info progress-bar-striped"
                 role="progressbar"
@@ -145,8 +191,13 @@ export default class UploadFiles extends Component {
                 {progress}%
               </div>
             </div>
-          )}
+          )} */}
         </div>
+          {photo && photo.length && (
+            <button className="continue finalContinue" onClick={() => onUpdate(photo)}>
+              Continue
+            </button>
+          )}
 
         {/* <div className="alert alert-light" role="alert">
           {message}

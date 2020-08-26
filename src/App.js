@@ -44,51 +44,68 @@ function App() {
 
   const [photos, showPhotos] = useState([]);
 
-  const [photoPickerIndex, changeIndex] = useState(0);
+  const [checkedList, changeList] = useState([]);
 
   const [json, showJson] = useState();
 
   function processPhotos(checkedItems) {
-    const photoList = checkedItems.map((item) => {
+    const checkedList = checkedItems.map((item) => {
       return {
-        description: item,
-        name: undefined,
-        size: undefined,
-        date: undefined,
-        url: undefined,
+        value: item.replace(/\s+/g, '_').toLowerCase(),
+        label: item,
+
       };
     });
-    showPhotos(photoList);
+    changeList(checkedList);
   }
 
   function renderPhotos() {
-    return photos.map((photo, index) => (
-      <div key={photo.description} className="PhotoPickerItem">
+    // photos.map((photo, index) => (
+    return (
+
+      <div className="PhotoPickerItem">
         <PhotoPicker
-          index={index}
-          show={photoPickerIndex}
-          title={photo.description}
+          // index={index}
+          // show={photoPickerIndex}
+          // title={photo.description}
           onClick={nextPhoto}
-          photos={photos}
-          onUpload={showPhotos}
-        />
+          checkedList={checkedList}
+          onUpload={onUpload}
+          onUpdate={updateFileInfo}
+          />
       </div>
-    ));
+          ) 
+    // ));
+  }
+
+  function onUpload(fileInfo) {
+    showPhotos((previousState) => {const newPhoto = [...previousState]
+    newPhoto.push(fileInfo)
+    return newPhoto});
+  }
+
+  function updateFileInfo(fileInfo){
+    fileInfo.map((item)=>{
+      const photo = photos.find((x) => x.newName === item.newName);
+      photo.tags = item.tags;
+      // console.log(photo);
+    })
+    showJson(JSON.stringify(photos, null, 1));
   }
 
   function nextPhoto() {
-    var newIndex =
-      photoPickerIndex <= photos.length
-        ? photoPickerIndex + 1
-        : photoPickerIndex;
-    // if(newIndex == photos.length-1){
-    //   showButton(true);
+    // var newIndex =
+    //   photoPickerIndex <= photos.length
+    //     ? photoPickerIndex + 1
+    //     : photoPickerIndex;
+    // // if(newIndex == photos.length-1){
+    // //   showButton(true);
+    // // }
+    // if (newIndex == photos.length) {
+    //   console.log(JSON.stringify(photos, null, 1));
     // }
-    if (newIndex == photos.length) {
-      console.log(JSON.stringify(photos, null, 1));
-      showJson(JSON.stringify(photos, null, 1));
-    }
-    changeIndex(newIndex);
+    // changeIndex(newIndex);
+    showJson(JSON.stringify(photos, null, 1));
   }
 
   return (
@@ -109,13 +126,13 @@ function App() {
       </header> */}
       <body>
         <div class="content">
-          <DamageLocationImage checkboxList={damageLocationList} onContinue={processPhotos}/>
+          {/* <DamageLocationImage checkboxList={damageLocationList} onContinue={processPhotos}/> */}
           <DamageLocation
             checkboxList={damageLocationList}
             onContinue={processPhotos}
           />
           {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
-          {renderPhotos()}
+          {checkedList.length>0 && renderPhotos()}
           {/* <button className={(finalButton) ? "continue display" : "hide"} onClick={nextPhoto}>Continue</button> */}
         </div>
           <pre >{json}</pre>

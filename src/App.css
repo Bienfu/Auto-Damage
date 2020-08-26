@@ -244,8 +244,8 @@
 .imageContainer{
   margin: auto;
   width: 100%;
-  border-style: dashed;
-  background-color: lightgray;
+  /* border-style: dashed; */
+  /* background-color: lightgray; */
 }
 
 .PhotoPickerPhoto {
@@ -337,4 +337,15 @@
 
 .PhotoPickerLabel{
   padding: 25px;
+}
+
+.PhotoPickerSelection{
+  background-color: lightgray;
+    border-style: solid;
+    border-color: lightgray;
+    margin-bottom: 30px;
+}
+
+.finalContinue{
+  margin-top: 10px;
 }
