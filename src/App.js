@@ -6,6 +6,7 @@ import DamageLocation from "./DamageLocation";
 import PhotoPicker from "./PhotoPicker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DamageLocationImage from "./DamageLocationImage";
+import PhotoSelection from "./PhotoSelection";
 
 function App() {
   // const damageLocationList = [
@@ -85,11 +86,11 @@ function App() {
   }
 
   function updateFileInfo(fileInfo){
-    fileInfo.map((item)=>{
-      const photo = photos.find((x) => x.newName === item.newName);
-      photo.tags = item.tags;
+    // fileInfo.map((item)=>{
+      // const photo = photos.find((x) => x.newName === item.newName);
+      // photo.tags = item.tags;
       // console.log(photo);
-    })
+    // })
     showJson(JSON.stringify(photos, null, 1));
   }
 
@@ -131,6 +132,7 @@ function App() {
             checkboxList={damageLocationList}
             onContinue={processPhotos}
           />
+          {/* <PhotoSelection/> */}
           {/* <button onClick={() => showPhoto(!photo)}>show photo</button> */}
           {checkedList.length>0 && renderPhotos()}
           {/* <button className={(finalButton) ? "continue display" : "hide"} onClick={nextPhoto}>Continue</button> */}

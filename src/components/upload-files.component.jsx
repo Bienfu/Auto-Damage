@@ -1,6 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, useCallback } from "react";
 import UploadService from "../services/upload-files.service";
 import Select from "react-select";
+import PhotoSelection from "../PhotoSelection";
+
 
 export default class UploadFiles extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export default class UploadFiles extends Component {
       message: "local",
       photo: undefined,
       fileInfos: [],
+      list: [],
     };
   }
 
@@ -33,34 +36,47 @@ export default class UploadFiles extends Component {
   //   });
   // }
 
+  startTimer() {
+    let counter = 0;
+    console.log(counter);
+    const interval = setInterval(() => {
+      counter += 12.5;
+      if (counter == 100) {
+        console.log("timer finished");
+        clearInterval(interval);
+      }
+    }, 500);
+  }
+
   upload = (file, index) => {
     // let currentFile = this.state.selectedFiles[0];
     let currentFile = file;
     const displayInfo = {
       progress: 0,
-      photoUrl: URL.createObjectURL(currentFile),
+      photoUrl: currentFile,
     };
 
     UploadService.upload(currentFile, (event) => {
+      this.startTimer();
       displayInfo.progress = Math.round((100 * event.loaded) / event.total);
       this.forceUpdate();
     })
       .then((response) => {
-        var currentdate = new Date();
-        const onUpload = this.props.onUpload;
-        // const photos = this.props.photos;
-        // const index = this.props.index;
-        // const title = this.props.title;
-        displayInfo.newName = response.data.filename;
-        const fileInfo = {
-          description: undefined,
-          name: response.data.originalname,
-          newName: response.data.filename,
-          size: response.data.size,
-          date: currentdate,
-          url: "http://localhost:8080/uploads/" + response.data.filename,
-        };
-        onUpload(fileInfo);
+        // var currentdate = new Date();
+        // const onUpload = this.props.onUpload;
+        // // const photos = this.props.photos;
+        // // const index = this.props.index;
+        // // const title = this.props.title;
+        // displayInfo.newName = response.data.filename;
+        // const fileInfo = {
+        //   description: undefined,
+        //   name: response.data.originalname,
+        //   newName: response.data.filename,
+        //   size: response.data.size,
+        //   date: currentdate,
+        //   url: "http://localhost:8080/uploads/" + response.data.filename,
+        // };
+        // onUpload(fileInfo);
       })
       // .then((files) => {
       //   this.setState({
@@ -68,6 +84,28 @@ export default class UploadFiles extends Component {
       //   });
       // })
       .catch(() => {
+        const rand = index;
+        let speed = 0;
+        if (rand == 0){
+          speed = 12.5;
+        }
+        else if (rand == 1){
+          speed = 25;
+        }
+        else if (rand == 2){
+          speed = 12.5/2;
+        }
+        let counter = 0;
+        console.log(counter);
+        const interval = setInterval(() => {
+          counter += speed;
+          displayInfo.progress = counter;
+          this.forceUpdate();
+          if (counter == 100) {
+            console.log("timer finished");
+            clearInterval(interval);
+          }
+        }, 500);
         // this.setState({
         //   progress: 0,
         //   message: "Could not upload the file!",
@@ -77,13 +115,27 @@ export default class UploadFiles extends Component {
     return displayInfo;
   };
 
-  uploadMulti = (evt) => {
-    const fileList = Array.from(evt.target.files);
+  onSubmit = (list) => {
+    const newList = list;
+    this.setState({
+      list: newList,
+    });
+    this.uploadMulti(newList);
+  }
+
+  uploadMulti(newList) {
+    // const fileList = Array.from(evt.target.files);
+    const photoList = [
+      "./front.jpg",
+      "./door.jpg",
+      "./backwheel.jpg"
+  ];
+  const list = newList;
     // var i = 0;
     // for (i = 0; i < length; i++) {
     //   this.upload(evt, i);
     // }
-    const photos = fileList.map((file, index) => this.upload(file, index));
+    const photos = list.map((file, index) => this.upload(photoList[file], index));
     this.setState({
       photo: photos,
     });
@@ -114,7 +166,9 @@ export default class UploadFiles extends Component {
         </div>
         <Select
           placeholder="Tag Damage Area..."
-          onChange={(tags) => (tags?item.tags = tags.map(tag=>tag.value):null)}
+          onChange={(tags) =>
+            tags ? (item.tags = tags.map((tag) => tag.value)) : null
+          }
           menuPlacement="top"
           maxMenuHeight={"150px"}
           isMulti
@@ -144,13 +198,16 @@ export default class UploadFiles extends Component {
       message,
       fileInfos,
       photo,
+      list,
     } = this.state;
 
     const { onUpdate } = this.props;
 
     return (
       <div>
-        <label className={!photo ? "btn btn-default UploadButtons" : "hide"}>
+          {list.length == 0 && <PhotoSelection onSubmit={this.onSubmit}/>}
+          {/* <button onClick={this.uploadMulti}>Click</button> */}
+        {/* <label className={!photo ? "btn btn-default UploadButtons" : "hide"}>
           <input
             type="file"
             name="file"
@@ -162,15 +219,7 @@ export default class UploadFiles extends Component {
             <i className="fas fa-file-upload uploadIcon"></i>
             <div className="UploadLabelText">Select files to upload</div>
           </label>
-
-          {/* <button
-            className="btn btn-success"
-            disabled={!selectedFiles}
-            onClick={this.upload}
-            >
-            Upload
-          </button> */}
-        </label>
+        </label> */}
         <div className={photo ? "imageContainer" : "hide"}>
           {/* <img
             src={photo}
@@ -193,11 +242,14 @@ export default class UploadFiles extends Component {
             </div>
           )} */}
         </div>
-          {photo && photo.length && (
-            <button className="continue finalContinue" onClick={() => onUpdate(photo)}>
-              Continue
-            </button>
-          )}
+        {photo && photo.length && (
+          <button
+            className="continue finalContinue"
+            onClick={() => onUpdate(photo)}
+          >
+            Continue
+          </button>
+        )}
 
         {/* <div className="alert alert-light" role="alert">
           {message}
